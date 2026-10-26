@@ -1,0 +1,29 @@
+{
+  "importable": false,
+  "publicEndpoint": "POST /as/token.oauth2",
+  "routingModel": "internal forwarding, never HTTP redirects",
+  "targets": {
+    "LEGACY_TOKEN_SERVICE": "fixed legacy AS backend; legacy grant store",
+    "LEGACY_EXCHANGE_ADAPTER": "reviewed migration service validates legacy grant and coordinates Group PF issuance",
+    "GROUP_PF_TOKEN": "fixed Group PingFederate token backend; configured PingDirectory grant store"
+  },
+  "untrustedRoutingHeadersToDiscard": [
+    "X-Token-Store",
+    "X-Migration-Route",
+    "X-Authenticated-Client"
+  ],
+  "prerequisites": [
+    "strict token form parsing with duplicate parameter rejection",
+    "registered ADR client authentication",
+    "trusted mTLS/sender proof validation",
+    "keyed authoritative token locator and current consent status"
+  ],
+  "notImplemented": [
+    "HTTP server",
+    "vendor SDK adapter or dynamic site selector",
+    "real token lookup",
+    "legacy exchange",
+    "grant issuance",
+    "atomic migration transaction"
+  ]
+}

@@ -21,3 +21,4 @@ jobs:
           java-version: '17'
       - run: sudo apt-get update && sudo apt-get install -y groovy
       - run: groovy -cp groovy groovy/AccessPolicyTest.groovy
+      - run: groovy groovy/RuleSnippetTest.groovy
