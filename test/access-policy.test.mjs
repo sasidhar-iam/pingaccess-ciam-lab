@@ -1,0 +1,12 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {decide} from '../src/access-policy.mjs';
+const claims={sub:'sample-customer',exp:200,scope:'openid accounts:read'};
+test('exact scope permits a validated identity',()=>assert.equal(decide(claims,'accounts:read',100).allowed,true));
+test('scope prefix does not grant access',()=>assert.equal(decide({...claims,scope:'accounts:read:all'},'accounts:read',100).allowed,false));
+test('expiry boundary denies',()=>assert.equal(decide(claims,'accounts:read',200).allowed,false));
+test('missing identity denies',()=>assert.equal(decide({...claims,sub:''},'accounts:read',100).allowed,false));
+test('malformed expiry denies',()=>assert.equal(decide({...claims,exp:'200'},'accounts:read',100).allowed,false));
+test('missing token claims deny',()=>assert.equal(decide(null,'accounts:read',100).allowed,false));
+test('invalid clock denies',()=>assert.equal(decide(claims,'accounts:read',NaN).allowed,false));
+test('empty or multi-scope policy denies',()=>{for(const s of ['',null,'openid accounts:read'])assert.equal(decide(claims,s,100).allowed,false);});

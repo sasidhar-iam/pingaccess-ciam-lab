@@ -1,0 +1,13 @@
+{
+  "importable": false,
+  "route": "GET /api/accounts",
+  "steps": [
+    "discard inbound identity headers",
+    "validate access token signature, issuer, audience, expiry and token type",
+    "require exact accounts:read scope",
+    "check active subject/client-bound consent",
+    "forward to fixed backend"
+  ],
+  "unauthenticatedStatus": 401,
+  "deniedStatus": 403
+}
